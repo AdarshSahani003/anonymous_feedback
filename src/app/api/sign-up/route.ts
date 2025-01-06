@@ -28,6 +28,8 @@ export async function POST(request: Request) {
                     message: "User already exists with this email"
                 }, { status: 400 })
             } else {
+                await UserModel.deleteOne({ username, isVerified: false });
+                existingUserByEmail.username = username
                 const hashedPassword = await bcrypt.hash(password, 10)
                 existingUserByEmail.password = hashedPassword
                 existingUserByEmail.verifyCode = verifyCode
@@ -36,8 +38,7 @@ export async function POST(request: Request) {
             }
         } else {
             const hashedPassword = await bcrypt.hash(password, 10)
-            const expiryDate = new Date()
-            expiryDate.setHours(expiryDate.getHours() + 1)
+            const expiryDate = new Date(Date.now() + 3600000)
 
             const newUser = new UserModel({
                 username,
@@ -56,6 +57,8 @@ export async function POST(request: Request) {
             email,
             username,
             verifyCode)
+        
+        console.log(emailResponse)
 
         if(!emailResponse.success) {
             return Response.json({

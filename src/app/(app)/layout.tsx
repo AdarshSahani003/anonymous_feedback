@@ -1,3 +1,4 @@
+
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 
@@ -9,11 +10,9 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" >
-        <body className={inter.className}>
+        <div className={inter.className}>
         <Navbar/>
           {children}
-        </body>
-    </html>
+        </div>
   );
 }

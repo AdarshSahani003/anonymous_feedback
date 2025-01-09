@@ -53,7 +53,7 @@ const signInForm = () => {
     }
 
     if (result?.url) {
-      router.replace('/dashboard');
+      router.replace('/');
     }
   };
     return (

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import axios, {AxiosError} from "axios"
 import { ApiResponse } from "@/types/ApiResponse";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
@@ -31,6 +31,7 @@ const page = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: "",
+      email: "",
       password: ""
     }
   })
@@ -94,13 +95,16 @@ const page = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
-                <Input
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    setUsername(e.target.value);
-                  }}
-                />
+                <FormControl>
+                  <Input
+                  type="text"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setUsername(e.target.value);
+                    }}
+                  />
+                </FormControl>
                 {isCheckingUsername && <Loader2 className="animate-spin" />}
                 {!isCheckingUsername && usernameMessage && (
                   <p
@@ -118,29 +122,29 @@ const page = () => {
             )}
           />
           <FormField
-            name="email"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <Input {...field} name="email" />
-                <p className='text-muted text-gray-400 text-sm'>We will send you a verification code</p>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              name="email"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl><Input {...field} type="email" /></FormControl>
+                  <p className='text-muted text-gray-400 text-sm'>We will send you a verification code</p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            name="password"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <Input type="password" {...field} name="password" />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              name="password"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl><Input {...field} type="password" /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           <Button type="submit" className='w-full' disabled={isSubmitting}>
             {isSubmitting ? (
               <>

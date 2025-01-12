@@ -63,6 +63,7 @@ const page = () => {
         title: "Success",
         description: response.data.message
       })
+     
       router.replace(`/verify/${username}`)
       setIsSubmitting(false)
     } catch (error) {

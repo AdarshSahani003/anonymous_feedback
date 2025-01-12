@@ -110,6 +110,13 @@ const signInForm = () => {
                     </Link>
                     </p>
                 </div>
+                <div className="text-center mt-4">
+                    <p>
+                    <Link href="/forgot-password" className="text-blue-600 hover:text-blue-800">
+                        Forgot Password
+                    </Link>
+                    </p>
+                </div>
             </div>
         </div>
     )

@@ -1,6 +1,5 @@
 'use client';
 
-import MessageCard  from '@/components/MessageCard';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -9,12 +8,13 @@ import { Message } from '@/model/Users';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
-import { Loader2, RefreshCcw } from 'lucide-react';
+import { Loader2, RefreshCcw, TrashIcon } from 'lucide-react';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
+import mongoose from 'mongoose';
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -23,8 +23,25 @@ function UserDashboard() {
 
   const { toast } = useToast();
 
-  const handleDeleteMessage = (messageId: string) => {
+  const handleDeleteMessage = async (messageId: mongoose.Schema.Types.ObjectId) => {
     setMessages(messages.filter((message) => message._id !== messageId));
+    try {
+      const response = await axios.delete<ApiResponse>(
+        `/api/delete-message/${messageId}`
+      );
+      toast({
+        title: response.data.message,
+      });
+
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: 'Error',
+        description:
+          axiosError.response?.data.message ?? 'Failed to delete message',
+        variant: 'destructive',
+      });
+    } 
   };
 
   const { data: session } = useSession();
@@ -177,21 +194,36 @@ function UserDashboard() {
           <RefreshCcw className="h-4 w-4" />
         )}
       </Button>
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <MessageCard
-              key={message._id}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
+      <div className="w-4/5 mx-auto bg-gray-50 rounded-lg shadow-md p-4 space-y-4">
+      <div className="h-96 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        {(messages.length != 0) ?  
+          ( messages.map((message, index) => (
+            <div
+                key={index}
+                className="flex flex-col bg-white rounded-md shadow-sm p-3 border border-gray-200 relative"
+              >
+                <button
+                  onClick={() => handleDeleteMessage(message._id)}
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+                <h4 className="text-sm font-bold text-gray-700 mb-1">
+                  {new Date(message.createdAt).toLocaleString()}
+                </h4>
+                <p className="text-gray-800 text-base">{message.content}</p>
+              </div>
+          ))) : 
+
+         (
           <p>No messages to display.</p>
-        )}
+        )
+      }
+      </div>
       </div>
     </div>
   );
 }
 
 export default UserDashboard;
+

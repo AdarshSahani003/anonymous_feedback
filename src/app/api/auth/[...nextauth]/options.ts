@@ -35,7 +35,8 @@ export const authOptions: NextAuthOptions = {
                         throw new Error("Password is incorrect")
                     }
                 } catch (err: any) {
-                    throw new Error(err)
+                    console.error("Authorize error:", err.message)
+                    throw new Error("Invalid login credentials")
                 }
             }
         })

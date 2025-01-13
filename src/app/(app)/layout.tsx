@@ -8,7 +8,7 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default async function DashLayout({ children }: RootLayoutProps) {
   return (
         <div className={inter.className}>
         <Navbar/>

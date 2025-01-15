@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react"
 import { signIn } from "next-auth/react"
 
 
-const signInForm = () => {
+const SignInForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter()
     const {toast} = useToast()
@@ -28,6 +28,7 @@ const signInForm = () => {
     })
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true)
     const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
@@ -49,6 +50,7 @@ const signInForm = () => {
         });
       }
     }
+    setIsSubmitting(false);
 
     if (result?.url) {
       router.replace('/');
@@ -120,4 +122,4 @@ const signInForm = () => {
     )
 }
 
-export default signInForm
+export default SignInForm

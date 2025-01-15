@@ -12,7 +12,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-const forgotPassword = () => {
+const ForgotPassword = () => {
     const router = useRouter()
     const {toast} = useToast()
 
@@ -75,4 +75,4 @@ const forgotPassword = () => {
 );
 }
 
-export default forgotPassword
+export default ForgotPassword

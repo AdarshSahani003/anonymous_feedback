@@ -26,7 +26,7 @@ import { Input } from '@/components/ui/input'
 import { useParams } from 'next/navigation'
 import { verifyForgotSchema } from '@/schemas/verifyForgotSchema'
 
-const forgotPasswordVerification = () => {
+const ForgotPasswordVerification = () => {
     const params = useParams<{username: string}>()
     console.log(params)
     const router = useRouter()
@@ -56,7 +56,7 @@ const forgotPasswordVerification = () => {
         } catch (error) {
             console.error("Error in password changing", error)
             const axiosError = error as AxiosError<ApiResponse>
-            let errorMessage = axiosError.response?.data.message
+            const errorMessage = axiosError.response?.data.message
             toast({
             title: "changing password failed",
             description: errorMessage,
@@ -115,4 +115,4 @@ const forgotPasswordVerification = () => {
   )
 }
 
-export default forgotPasswordVerification
+export default ForgotPasswordVerification

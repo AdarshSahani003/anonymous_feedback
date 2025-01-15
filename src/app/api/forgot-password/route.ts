@@ -42,6 +42,7 @@ export async function  POST(request: Request) {
             username: newUser?.username
         }, { status: 201 })
     } catch (error) {
+        console.error("Error sending verification email")
         return Response.json(
             {
                 success: false,

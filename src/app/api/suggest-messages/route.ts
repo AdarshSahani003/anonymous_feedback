@@ -32,7 +32,7 @@ async function fetchSuggestions(): Promise<string> {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const suggestions = await fetchSuggestions();
     return NextResponse.json(suggestions);

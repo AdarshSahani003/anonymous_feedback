@@ -15,7 +15,7 @@ import { Loader2 } from 'lucide-react'
 import { Textarea } from '@/components/ui/textarea'
 
 
-function page() {
+function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams<{ username: string }>();
   const username = params.username;
@@ -96,4 +96,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

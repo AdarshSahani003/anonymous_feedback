@@ -40,8 +40,8 @@ export async function GET(request: Request) {
             message: "Username is unique"
         })
 
-    } catch (error: any) {
-        console.error("Error checking username uniqueness", error.errors)
+    } catch (error) {
+        console.error("Error checking username uniqueness", error)
         return Response.json({
             success: false,
             message: "Error checking username uniqueness"
